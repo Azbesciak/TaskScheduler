@@ -11,7 +11,6 @@ dependencies {
 }
 
 tasks.withType(ScalaCompile) {
-    scalaCompileOptions.useAnt = false
     targetCompatibility = 1.8
     sourceCompatibility = 1.8
 }
