@@ -1,0 +1,17 @@
+group 'cs.put.ptsz'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'scala'
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.13.0-M5'
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+}
