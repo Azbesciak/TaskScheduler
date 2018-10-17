@@ -23,7 +23,7 @@ object ProblemParser {
 		val tasksCount = scanner.nextInt()
 		val tasks = new Array[Task](tasksCount)
 		for (taskId <- 0 until tasksCount) {
-			tasks(taskId) = Task(scanner.nextInt(), scanner.nextInt(), scanner.nextInt())
+			tasks(taskId) = Task(taskId, scanner.nextInt(), scanner.nextInt(), scanner.nextInt())
 		}
 		Problem(tasks)
 	}
