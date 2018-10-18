@@ -1,6 +1,7 @@
-package cs.put.ptsz.taskscheduler
+package cs.put.ptsz.taskscheduler.input
 
 import cs.put.ptsz.taskscheduler.Util.executeTillValid
+import cs.put.ptsz.taskscheduler.solver.{Instance, Problem}
 
 import scala.io.StdIn
 

@@ -1,4 +1,4 @@
-package cs.put.ptsz.taskscheduler
+package cs.put.ptsz.taskscheduler.input
 
 import java.io.File
 

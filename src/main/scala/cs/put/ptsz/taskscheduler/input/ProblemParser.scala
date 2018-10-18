@@ -1,9 +1,10 @@
-package cs.put.ptsz.taskscheduler
+package cs.put.ptsz.taskscheduler.input
 
 import java.io.{File, FileInputStream}
 import java.util.Scanner
 
-import cs.put.ptsz.taskscheduler.Control.using
+import cs.put.ptsz.taskscheduler.Util.using
+import cs.put.ptsz.taskscheduler.solver.{Problem, Task}
 
 object ProblemParser {
 	def load(file: File): Array[Problem] = {
