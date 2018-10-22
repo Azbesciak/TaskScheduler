@@ -4,7 +4,7 @@ import cs.put.ptsz.taskscheduler.cost.CostFunction
 
 import scala.annotation.tailrec
 
-class Assigner(
+class OffSetFinder(
 	private val costFunction: CostFunction,
 	private val tasks: Array[Task]
 ) {
