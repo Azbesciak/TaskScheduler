@@ -1,4 +1,4 @@
-package cs.put.ptsz.taskscheduler.input
+package cs.put.ptsz.taskscheduler.input.interactive
 
 import java.io.File
 
@@ -7,7 +7,7 @@ import cs.put.ptsz.taskscheduler.Util.executeTillValid
 import scala.io.StdIn
 
 
-class ProblemsProvider(private val filePath: String) {
+class InteractiveProblemsProvider(private val filePath: String) {
 	private val files = getFilesInDir(filePath)
 
 	def list() = files.zipWithIndex.foreach { case (f, i) => println(s"$i: ${f.getName}") }
