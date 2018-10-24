@@ -7,7 +7,7 @@ import cs.put.ptsz.taskscheduler.solver.Instance
 object InteractiveInstanceProvider extends InstanceProvider {
 	private val DEFAULT_SOURCE = "src/main/resources"
 
-	override def provide(args: Array[String]): Instance = {
+	override def provide(args: Array[String]): Array[Instance] = {
 		val dirPath = if (args.length == 1) args(0) else DEFAULT_SOURCE
 		val provider = new InteractiveProblemsProvider(dirPath)
 		provider.list()

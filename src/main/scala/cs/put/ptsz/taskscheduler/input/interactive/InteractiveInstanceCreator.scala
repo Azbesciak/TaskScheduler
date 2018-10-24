@@ -6,18 +6,20 @@ import cs.put.ptsz.taskscheduler.solver.{Instance, Problem}
 import scala.io.StdIn
 
 class InteractiveInstanceCreator(problems: Array[Problem]) {
-	def get(): Instance = {
+	def get(): Array[Instance] = {
 		val problem = chooseProblem
 		val h = chooseHValue
-		Instance(problem, h)
+		problem.map(Instance(_, h))
 	}
 
-	private def chooseProblem: Problem = {
+	private def chooseProblem: Array[Problem] = {
 		println(problems.zipWithIndex.map { case (t, i) => s"$i: $t}" }.mkString("\n"))
-		executeTillValid("pass problem index:", () => {
+		executeTillValid("pass problem index (-1 == all):", () => {
 			val index = StdIn.readInt()
-			if (index >= 0 && index < problems.length)
-				Some(problems(index))
+			if (index == -1) {
+				Some(problems)
+			} else if (index >= 0 && index < problems.length)
+				Some(Array(problems(index)))
 			else {
 				println(s"invalid problem index $index, allowed [0, ${problems.length-1}]")
 				None
