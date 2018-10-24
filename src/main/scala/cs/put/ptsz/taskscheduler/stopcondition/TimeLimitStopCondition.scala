@@ -1,9 +1,6 @@
 package cs.put.ptsz.taskscheduler.stopcondition
 
-import java.time.Instant
-
 import cs.put.ptsz.taskscheduler.solver.EvaluatedSolution
-
 import scala.concurrent.duration.Duration
 
 class TimeLimitStopCondition(duration: Duration) extends StopCondition {
