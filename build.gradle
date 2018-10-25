@@ -2,8 +2,15 @@ group 'cs.put.ptsz'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'scala'
+apply plugin: 'application'
+
+mainClassName = 'cs.put.ptsz.taskscheduler.Main'
 repositories {
     mavenCentral()
+}
+
+run {
+    standardInput = System.in
 }
 
 dependencies {
