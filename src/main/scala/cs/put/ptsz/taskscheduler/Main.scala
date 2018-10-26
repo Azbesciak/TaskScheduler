@@ -20,10 +20,11 @@ object Main extends App {
 			 new ImprovingSolutionsStopCondition(100),
 			 new TimeLimitStopCondition(Duration(5, TimeUnit.SECONDS))
 		 )
-		 val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, new AggregatedTaskMutator(
+		 val mutator = new AggregatedTaskMutator(
 			 new SameSingleTimeTaskMutator,
 			 new SortTaskMutator(instance)
-		 ))
+		 )
+		 val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
 		 val solution = scheduler.schedule()
 		 OutputProducer.make(instance, solution)
 	 }).foreach(println)
