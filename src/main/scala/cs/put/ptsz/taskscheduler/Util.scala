@@ -22,4 +22,6 @@ object Util {
 		} finally {
 			resource.close()
 		}
+
+	def mapToIndexes(value: String): Array[Int] = value.split(",").map(_.toInt-1)
 }

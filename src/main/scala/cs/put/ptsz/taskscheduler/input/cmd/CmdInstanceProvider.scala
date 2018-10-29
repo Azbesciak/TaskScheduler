@@ -2,6 +2,7 @@ package cs.put.ptsz.taskscheduler.input.cmd
 
 import java.io.File
 
+import cs.put.ptsz.taskscheduler.Util.mapToIndexes
 import cs.put.ptsz.taskscheduler.input.{InstanceProvider, ProblemParser}
 import cs.put.ptsz.taskscheduler.solver.Instance
 
@@ -14,9 +15,7 @@ object CmdInstanceProvider extends InstanceProvider {
 		val problems = ProblemParser.load(instanceFile)
 		val hValue = args.last.toDouble
 		val chosenProblems = args.length match {
-			case 3 =>
-				val problemIndex = args(1).toInt
-				Array(problems(problemIndex))
+			case 3 => mapToIndexes(args(1)).map(problems(_))
 			case _ => problems
 		}
 		chosenProblems.map(Instance(_, hValue))
