@@ -4,7 +4,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'scala'
 apply plugin: 'application'
 
-mainClassName = 'cs.put.ptsz.taskscheduler.Main'
+mainClassName = 'cs.put.ptsz.taskscheduler.Solver'
 repositories {
     mavenCentral()
 }

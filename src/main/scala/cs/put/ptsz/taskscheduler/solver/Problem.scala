@@ -25,3 +25,8 @@ case class EvaluatedSolution(
 case class TaskSchedule(task: Task, start: Int) {
 	val end: Int = start + task.time
 }
+
+case class Result(
+	instance: Instance,
+	solution: EvaluatedSolution
+)
