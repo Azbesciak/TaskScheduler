@@ -24,17 +24,8 @@ class OffSetFinder(
 	}
 
 	private def getForOffset(offset: Int): EvaluatedSolution = {
-		val solution = Solution(assign(tasks, offset))
+		val solution = Solution(TaskOffsetAssigner.assign(tasks, offset))
 		val cost = costFunction.cost(solution)
 		EvaluatedSolution(solution, cost, offset)
-	}
-
-	private def assign(tasks: Array[Task], startOffset: Int): Array[TaskSchedule] = {
-		var lastEndTime = startOffset
-		tasks.map(t => {
-			val startTime = lastEndTime
-			lastEndTime += t.time
-			TaskSchedule(t, startTime)
-		})
 	}
 }
