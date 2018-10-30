@@ -20,10 +20,6 @@ object InstanceParamsParser {
 	private val solutionFileRegex = "(n(\\d+))?(k([\\d,]+))(h(0[,.])?(\\d+))\\.txt"
 	 .r("n", "nVal", "k", "kVal", "h", "prefix", "hVal")
 
-	private def getHValue(params: Regex.MatchIterator): Option[String] = {
-		Some(params.group("hVal"))
-	}
-
 	def parse(solutionFilePath: String) = {
 		val params: Regex.MatchIterator = solutionFileRegex
 		 .findAllIn(solutionFilePath)
