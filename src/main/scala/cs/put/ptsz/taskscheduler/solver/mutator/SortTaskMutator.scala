@@ -7,7 +7,7 @@ class SortTaskMutator(private val instance: Instance) extends TasksMutator {
 	private val sortFunctions = getSortFun()
 
 	override def mutate(tasks: Array[Task]): Array[Task] = {
-		require(canMutate(), () => "no further mutations")
+		require(canMutate(), "no further mutations")
 		val sortFun = sortFunctions.next
 		tasks.sortBy(sortFun)
 	}

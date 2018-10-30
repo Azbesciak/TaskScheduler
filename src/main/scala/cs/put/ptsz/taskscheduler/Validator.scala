@@ -43,9 +43,9 @@ class StringSolutionValidator(costFunctionSource: Instance => CostFunction) {
 		val offSet = values(2).toInt
 		val tasks = instance.problem.tasks
 
-		require(tasks.length == values.length - 3, {
+		require(tasks.length == values.length - 3,
 			s"invalid problem tasks length - ${tasks.length} vs ${values.length - 3} in solution"
-		})
+		)
 		val orderedTasks = values.drop(3).map(v => tasks(v.toInt))
 		val scheduledTasks = TaskOffsetAssigner.assign(orderedTasks, offSet)
 		val solution = Solution(scheduledTasks)
@@ -70,27 +70,25 @@ object Validator extends App {
 	private def extractHValue(params: SolutionInstanceParams) = {
 		val hString = params.h
 		 .getOrElse({
-			 require(args.length == 3, () => "h value not passed neither in args nor in solution name")
+			 require(args.length == 3, "h value not passed neither in args nor in solution name")
 			 args(2)
 		 })
 		 .replaceFirst("0[.,]", "")
 		s"0.$hString".toDouble
 	}
 
-	require(args.length == 2 || args.length == 3,
-		() => "Usage: cmd args: <instance file path> <solution path> " +
-		 "[h value - if absent, require in output name in type nkh.txt with values after prefix]")
+	require(args.length == 2 || args.length == 3, {
+		"Usage: cmd args: <instance file path> <solution path> " +
+		 "[h value - if absent, require in output name in type nkh.txt with values after prefix]"
+	})
 
 	private val instanceFile = new File(args(0))
-	require(instanceFile.exists(), {
-		s"instance file ${args(0)} does not exists"
-	})
+	require(instanceFile.exists(), s"instance file ${args(0)} does not exists"
+	)
 	private val problems = ProblemParser.load(instanceFile)
 	private val solutionFilePath = args(1)
 	private val solutionFile = new File(solutionFilePath)
-	require(solutionFile.exists(), {
-		s"solution $solutionFilePath file does not exists"
-	})
+	require(solutionFile.exists(), s"solution $solutionFilePath file does not exists")
 	val params = InstanceParamsParser.parse(solutionFilePath)
 	private val h = extractHValue(params)
 	private val chosenProblems = params.k
