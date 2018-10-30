@@ -12,7 +12,7 @@ class CenterOrientedTasksMutator(instance: Instance) extends TasksMutator {
 		var timeLeftBeforeDueTime = instance.dueTime
 		toMakeBefore zip toMakeAfter map {
 			case (t1, t2) =>
-				if (t1._2 > t2._2 && timeLeftBeforeDueTime - t1._1.time > 0) {
+				if (t1._2 >= t2._2 && timeLeftBeforeDueTime - t1._1.time >= 0) {
 					timeLeftBeforeDueTime -= t1._1.time
 					(t1._1, -t1._2)
 				} else t2
