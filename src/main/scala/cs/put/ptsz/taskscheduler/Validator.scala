@@ -66,16 +66,15 @@ object Validator extends App {
 	private def extractHValue(params: SolutionInstanceParams) = {
 		val hString = params.h
 		 .getOrElse({
-			 require(args.length == 3, "h value not passed neither in args nor in solution name")
+			 require(args.length == 3, "h value(s) not passed neither in args nor in solution name")
 			 args(2)
 		 })
-		 .replaceFirst("0[.,]", "")
-		s"0.$hString".toDouble
+		Util.extractHValues(hString)
 	}
 
 	require(args.length == 2 || args.length == 3, {
 		"Usage: cmd args: <instance file path> <solution path> " +
-		 "[h value - if absent, require in output name in type nkh.txt with values after prefix]"
+		 "[h values ',' separated - if absent, require in output name in type nkh.txt with values after prefix]"
 	})
 
 	private val instanceFile = new File(args(0))
@@ -86,17 +85,18 @@ object Validator extends App {
 	private val solutionFile = new File(solutionFilePath)
 	require(solutionFile.exists(), s"solution $solutionFilePath file does not exists")
 	val params = InstanceParamsParser.parse(solutionFilePath)
-	private val h = extractHValue(params)
+	private val hValues = extractHValue(params)
 	private val chosenProblems = params.k
 	 .map(mapToIndexes)
 	 .map(indexes => indexes.map(problems(_)))
 	 .getOrElse(problems)
-	 .map(Instance(_, h))
+
+	val instances = Util.createInstances(chosenProblems, hValues)
 	val validator = new StringSolutionValidator(instance => new OneMachineScheduleEndTimeCostFunction(instance))
 
 	private val invalidSolutions = Source.fromFile(solutionFile)
 	 .getLines().toArray
-	 .zip(chosenProblems)
+	 .zip(instances)
 	 .map(s => validator.validate(s._1, s._2))
 	 .filterNot(r => r.isValid)
 
