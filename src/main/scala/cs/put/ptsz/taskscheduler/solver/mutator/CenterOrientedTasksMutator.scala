@@ -7,8 +7,8 @@ class CenterOrientedTasksMutator(instance: Instance) extends TasksMutator {
 
 	override def mutate(tasks: Array[Task]): Array[Task] = {
 		wasUsed = true
-		val toMakeBefore = tasks.sortBy(t => (-t.earlinessCost, t.time)).zipWithIndex.sortBy(_._1.id)
-		val toMakeAfter = tasks.sortBy(t => (-t.tardinessCost, t.time)).zipWithIndex.sortBy(_._1.id)
+		val toMakeBefore = tasks.sortBy(t => (-t.earlinessCost, t.time, t.tardinessCost)).zipWithIndex.sortBy(_._1.id)
+		val toMakeAfter = tasks.sortBy(t => (-t.tardinessCost, t.time, t.earlinessCost)).zipWithIndex.sortBy(_._1.id)
 		var timeLeftBeforeDueTime = instance.dueTime
 		toMakeBefore zip toMakeAfter map {
 			case (t1, t2) =>
