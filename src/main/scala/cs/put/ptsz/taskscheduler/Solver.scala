@@ -4,7 +4,7 @@ import cs.put.ptsz.taskscheduler.cost.OneMachineScheduleEndTimeCostFunction
 import cs.put.ptsz.taskscheduler.input.InstanceFactory
 import cs.put.ptsz.taskscheduler.output.OutputProducer
 import cs.put.ptsz.taskscheduler.solver.{Result, SimpleTaskScheduler}
-import cs.put.ptsz.taskscheduler.solver.mutator.{AggregatedTaskMutator, SameSingleTimeTaskMutator, SortTaskMutator}
+import cs.put.ptsz.taskscheduler.solver.mutator._
 import cs.put.ptsz.taskscheduler.stopcondition.{AllValidStopCondition, ImprovingSolutionsStopCondition, SolutionsCountStopCondition, TimeLimitStopCondition}
 
 import scala.concurrent.duration.Duration
@@ -21,6 +21,8 @@ object Solver extends App {
 		 )
 		 val mutator = new AggregatedTaskMutator(
 			 new SameSingleTimeTaskMutator,
+			 new CenterOrientedTasksMutator(instance),
+			 new WeightedSortTasksMutator,
 			 new SortTaskMutator(instance)
 		 )
 		 val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
