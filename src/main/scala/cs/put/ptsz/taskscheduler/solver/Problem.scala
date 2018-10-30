@@ -9,7 +9,8 @@ case class Problem(tasks: Array[Task]) {
 }
 
 case class Instance(problem: Problem, h: Double) {
-	val summaryTime: Int = problem.tasks.map(_.time).sum
+	private val summaryTime = problem.tasks.map(_.time).sum
+	val dueTime: Int = math.floor(summaryTime * h).toInt
 }
 
 case class Solution(tasks: Array[TaskSchedule]) {
