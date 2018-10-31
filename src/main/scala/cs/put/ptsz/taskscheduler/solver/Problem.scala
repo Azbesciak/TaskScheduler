@@ -4,8 +4,8 @@ import cs.put.ptsz.taskscheduler.cost.Cost
 
 case class Task(id: Int, time: Int, earlinessCost: Int, tardinessCost: Int)
 
-case class Problem(tasks: Array[Task]) {
-	override def toString: String = s"Problem(${tasks.mkString("[", ",", "]")})"
+case class Problem(id: Int, tasks: Array[Task]) {
+	override def toString: String = s"Problem($id, ${tasks.mkString("[", ",", "]")})"
 }
 
 case class Instance(problem: Problem, h: Double) {

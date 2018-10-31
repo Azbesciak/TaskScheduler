@@ -15,17 +15,17 @@ object ProblemParser {
 		val problemsCount = scanner.nextInt()
 		val problems = new Array[Problem](problemsCount)
 		for (i <- 0 until problemsCount) {
-			problems(i) = createProblem(scanner)
+			problems(i) = createProblem(scanner, i)
 		}
 		problems
 	}
 
-	private def createProblem(scanner: Scanner): Problem = {
+	private def createProblem(scanner: Scanner, index: Int): Problem = {
 		val tasksCount = scanner.nextInt()
 		val tasks = new Array[Task](tasksCount)
 		for (taskId <- 0 until tasksCount) {
 			tasks(taskId) = Task(taskId, scanner.nextInt(), scanner.nextInt(), scanner.nextInt())
 		}
-		Problem(tasks)
+		Problem(index + 1, tasks)
 	}
 }
