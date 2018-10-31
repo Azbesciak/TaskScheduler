@@ -1,10 +1,11 @@
 package cs.put.ptsz.taskscheduler
 
+import cs.put.ptsz.taskscheduler.Util.measureTime
 import cs.put.ptsz.taskscheduler.cost.OneMachineScheduleEndTimeCostFunction
 import cs.put.ptsz.taskscheduler.input.InstanceFactory
 import cs.put.ptsz.taskscheduler.output.OutputProducer
-import cs.put.ptsz.taskscheduler.solver.{Result, SimpleTaskScheduler}
 import cs.put.ptsz.taskscheduler.solver.mutator._
+import cs.put.ptsz.taskscheduler.solver.{Result, SimpleTaskScheduler}
 import cs.put.ptsz.taskscheduler.stopcondition.{AllValidStopCondition, ImprovingSolutionsStopCondition, SolutionsCountStopCondition, TimeLimitStopCondition}
 
 import scala.concurrent.duration.Duration
@@ -26,8 +27,10 @@ object Solver extends App {
 			 new SortTaskMutator(instance)
 		 )
 		 val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
-		 val solution = scheduler.schedule()
-		 Result(instance, solution)
+		 val (solution, duration) = measureTime {
+			 scheduler.schedule()
+		 }
+		 Result(instance, solution, duration)
 	 })
 	OutputProducer.consume(results)
 }

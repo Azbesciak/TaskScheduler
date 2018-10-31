@@ -2,6 +2,8 @@ package cs.put.ptsz.taskscheduler.solver
 
 import cs.put.ptsz.taskscheduler.cost.Cost
 
+import scala.concurrent.duration.Duration
+
 case class Task(id: Int, time: Int, earlinessCost: Int, tardinessCost: Int)
 
 case class Problem(id: Int, tasks: Array[Task]) {
@@ -29,5 +31,6 @@ case class TaskSchedule(task: Task, start: Int) {
 
 case class Result(
 	instance: Instance,
-	solution: EvaluatedSolution
+	solution: EvaluatedSolution,
+	duration: Duration
 )
