@@ -8,6 +8,10 @@ import scala.concurrent.duration.Duration
 import scala.util.Properties
 
 object OutputProducer {
+	val OUTPUT_DIR_PROP = "outputDir"
+	val DETAILS_PROP = "details"
+	val MEASURE_TIME_PROP = "measureTime"
+
 	def consume(results: Array[Result]) = {
 		val serialized = results.map(r => make(r.instance, r.solution, r.duration)).mkString("\n").getBytes
 		output(results).write(serialized)
@@ -18,7 +22,7 @@ object OutputProducer {
 		val ids = instances.map(_.problem.id).distinct
 		val hs = instances.map(_.h).distinct.map(_.toString.drop(2).toInt)
 		val ns = instances.map(_.problem.tasks.length).distinct
-		Properties.propOrNone("outputDir").map(p => {
+		Properties.propOrNone(OUTPUT_DIR_PROP).map(p => {
 			val file = getFile(ns, ids, hs, p)
 			new FileOutputStream(file)
 		}).getOrElse(Console.out)
@@ -37,12 +41,22 @@ object OutputProducer {
 	}
 
 	private def make(instance: Instance, solution: EvaluatedSolution, duration: Duration) = {
-		val maybeDetails = onPropertySwitched("details", () => s"n:${instance.problem.tasks.length} k:${instance.problem.id} h:${instance.h}")
-		val maybeDuration = onPropertySwitched("measureTime", () => s"TIME: ${duration.toMillis} ms")
+		val maybeDetails = onPropertySwitched(DETAILS_PROP, () => s"n:${instance.problem.tasks.length} k:${instance.problem.id} h:${instance.h}")
+		val maybeDuration = onPropertySwitched(MEASURE_TIME_PROP, () => s"TIME: ${getTime(duration)}")
 		val result = Some(s"${solution.cost.value} ${instance.h} ${solution.offset} ${solution.solution.tasks.map(_.task.id).mkString(" ")}")
 		Array(maybeDetails, maybeDuration, result).flatten.mkString("\t| ")
 	}
 
+	private def getTime(duration: Duration) =
+		if (duration.toMillis < 10)
+			s"${duration.toNanos} ns"
+		else if (duration.toMillis < 10000)
+			s"${duration.toMillis} ms"
+		else
+			s"${duration.toSeconds} s"
+
 	private def onPropertySwitched(prop: String, block: () => String) =
 		Properties.propOrNone(prop).filter(_ == "true").map(_ => block())
+
+	def enable(property: String) = Properties.setProp(property, "true")
 }
