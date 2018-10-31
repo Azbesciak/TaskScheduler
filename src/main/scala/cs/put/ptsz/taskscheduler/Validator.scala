@@ -17,8 +17,8 @@ case class SolutionInstanceParams(
 )
 
 object InstanceParamsParser {
-	private val solutionFileRegex = "(n(\\d+))?(k([\\d,]+))(h(0[,.])?(\\d+))\\.txt"
-	 .r("n", "nVal", "k", "kVal", "h", "prefix", "hVal")
+	private val solutionFileRegex = "(n(\\d+))?(k([\\d,]+))(h([0.\\d,]+)).*\\.txt"
+	 .r("n", "nVal", "k", "kVal", "h", "hVal")
 
 	def parse(solutionFilePath: String) = {
 		val params: Regex.MatchIterator = solutionFileRegex
