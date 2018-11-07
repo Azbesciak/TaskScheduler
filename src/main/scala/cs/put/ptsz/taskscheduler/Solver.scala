@@ -21,9 +21,8 @@ object Solver {
 			new TimeLimitStopCondition(Duration(props.timeLimit))
 		)
 		val mutator = new AggregatedTaskMutator(
-			new SameSingleTimeTaskMutator,
+			new PartitioningTaskMutator(instance),
 			new CenterOrientedTasksMutator(instance),
-			new WeightedSortTasksMutator,
 			new SortTaskMutator(instance)
 		)
 		val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
