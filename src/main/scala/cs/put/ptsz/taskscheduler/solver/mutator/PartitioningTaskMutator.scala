@@ -23,7 +23,7 @@ class PartitioningTaskMutator(val instance: Instance) extends TasksMutator {
 
 	private def fillTimeAfter(timeLeft: Int, before: Array[Task], after: Array[Task]): (Array[Task], Array[Task]) = {
 		var timeLeftVar = timeLeft
-		val (leftBefore, toDoAfter) = before.sortBy(t => (-t.time.toDouble / t.tardinessCost, -t.time, -t.tardinessCost))
+		val (leftBefore, toDoAfter) = sortByTardinessCost(before)
 		 .partition(t => {
 			 if (timeLeftVar + t.time <= 0) {
 				 timeLeftVar += t.time
@@ -37,7 +37,7 @@ class PartitioningTaskMutator(val instance: Instance) extends TasksMutator {
 
 	private def fillTimeBefore(timeLeft: Int, before: Array[Task], after: Array[Task]): (Array[Task], Array[Task]) = {
 		var timeLeftVar = timeLeft
-		val (toDoBefore, leftAfter) = after.sortBy(t => (-t.time.toDouble / t.earlinessCost, t.earlinessCost, -t.time, -t.tardinessCost))
+		val (toDoBefore, leftAfter) = sortByEarlinessCost(after)
 		 .partition(t => {
 			 if (timeLeftVar - t.time >= 0) {
 				 timeLeftVar -= t.time
@@ -50,10 +50,12 @@ class PartitioningTaskMutator(val instance: Instance) extends TasksMutator {
 	}
 
 	private def moveTasks(toDoBefore: Array[Task], toDoAfter: Array[Task]): (Array[Task], Array[Task]) = {
-		val sortedToDoBefore = toDoBefore.sortInPlaceBy(t => (-t.time.toDouble / t.earlinessCost, t.earlinessCost, -t.time, -t.tardinessCost)).toArray
-		val sortedToDoAfter = toDoAfter.sortInPlaceBy(t => (-t.time.toDouble / t.tardinessCost, t.tardinessCost, -t.time, -t.earlinessCost)).reverse.toArray
+		val sortedToDoBefore = sortByEarlinessCost(toDoBefore)
+		val sortedToDoAfter = sortByTardinessCost(toDoAfter).reverse
 		(sortedToDoBefore, sortedToDoAfter)
 	}
 
+	private def sortByEarlinessCost(tasks: Array[Task]) = tasks.sortInPlaceBy(t => (t.earlinessCost / t.time.toDouble, t.earlinessCost, -t.time, -t.tardinessCost)).toArray
+	private def sortByTardinessCost(tasks: Array[Task]) = tasks.sortInPlaceBy(t => (t.tardinessCost / t.time.toDouble, t.tardinessCost, -t.time, -t.earlinessCost)).toArray
 	override def canMutate(): Boolean = !wasUsed
 }

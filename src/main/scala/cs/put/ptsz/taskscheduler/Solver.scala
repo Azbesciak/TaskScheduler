@@ -6,7 +6,7 @@ import cs.put.ptsz.taskscheduler.cost.OneMachineScheduleEndTimeCostFunction
 import cs.put.ptsz.taskscheduler.input.InstanceFactory
 import cs.put.ptsz.taskscheduler.output.OutputProducer
 import cs.put.ptsz.taskscheduler.solver.mutator._
-import cs.put.ptsz.taskscheduler.solver.{Instance, Result, SimpleTaskScheduler}
+import cs.put.ptsz.taskscheduler.solver._
 import cs.put.ptsz.taskscheduler.stopcondition.{AllValidStopCondition, ImprovingSolutionsStopCondition, SolutionsCountStopCondition, TimeLimitStopCondition}
 
 import scala.concurrent.duration.Duration
