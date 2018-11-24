@@ -15,11 +15,24 @@ class OffSetFinder(
 		if (end.offset - start.offset <= 1) {
 			return if (start.cost < end.cost) start else end
 		}
-		val middlePoint = (start.offset + end.offset) / 2
+		val middlePoint = findMiddle(start, end)
+
 		if (start.cost < end.cost) {
-			find(start, getForOffset(middlePoint))
+			find(start, middlePoint)
 		} else {
-			find(getForOffset(middlePoint), end)
+			find(middlePoint, end)
+		}
+	}
+
+	private def findMiddle(start: EvaluatedSolution, end: EvaluatedSolution) = {
+		val sum = start.offset + end.offset
+		val middle = sum / 2
+		val lowerCenter = getForOffset(middle)
+		sum % 2 match {
+			case 0 => lowerCenter
+			case 1 =>
+				val upperCenter = getForOffset(middle + 1)
+				if (lowerCenter.cost < upperCenter.cost) lowerCenter else upperCenter
 		}
 	}
 
