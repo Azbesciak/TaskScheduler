@@ -17,7 +17,6 @@ class PartitioningTaskMutator(val instance: Instance) extends TasksMutator {
 			fillTimeAfter(math.min(timeLeft, difference.toInt), sortedToDoBefore, sortedToDoAfter)
 		else
 			(sortedToDoBefore, sortedToDoAfter)
-//			fillTimeBefore(timeLeft, sortedToDoBefore, sortedToDoAfter)
 		changed._1 ++ changed._2
 	}
 
@@ -35,27 +34,15 @@ class PartitioningTaskMutator(val instance: Instance) extends TasksMutator {
 		moveTasks(leftBefore, toDoAfter ++ after)
 	}
 
-	private def fillTimeBefore(timeLeft: Int, before: Array[Task], after: Array[Task]): (Array[Task], Array[Task]) = {
-		var timeLeftVar = timeLeft
-		val (toDoBefore, leftAfter) = sortByEarlinessCost(after)
-		 .partition(t => {
-			 if (timeLeftVar - t.time >= 0) {
-				 timeLeftVar -= t.time
-				 true
-			 } else {
-				 false
-			 }
-		 })
-		moveTasks(before ++ toDoBefore, leftAfter)
-	}
-
 	private def moveTasks(toDoBefore: Array[Task], toDoAfter: Array[Task]): (Array[Task], Array[Task]) = {
 		val sortedToDoBefore = sortByEarlinessCost(toDoBefore)
 		val sortedToDoAfter = sortByTardinessCost(toDoAfter).reverse
 		(sortedToDoBefore, sortedToDoAfter)
 	}
 
-	private def sortByEarlinessCost(tasks: Array[Task]) = tasks.sortInPlaceBy(t => (t.earlinessCost / t.time.toDouble, t.earlinessCost, -t.time, -t.tardinessCost)).toArray
-	private def sortByTardinessCost(tasks: Array[Task]) = tasks.sortInPlaceBy(t => (t.tardinessCost / t.time.toDouble, t.tardinessCost, -t.time, -t.earlinessCost)).toArray
+	private def sortByEarlinessCost(tasks: Array[Task]) =
+		tasks.sortBy(t => (t.earlinessCost / t.time.toDouble, t.earlinessCost, -t.time, -t.tardinessCost))
+	private def sortByTardinessCost(tasks: Array[Task]) =
+		tasks.sortBy(t => (t.tardinessCost / t.time.toDouble, t.tardinessCost, -t.time, -t.earlinessCost))
 	override def canMutate(): Boolean = !wasUsed
 }
