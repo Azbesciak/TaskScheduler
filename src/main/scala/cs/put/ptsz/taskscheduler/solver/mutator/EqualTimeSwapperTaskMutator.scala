@@ -6,7 +6,7 @@ class EqualTimeSwapperTaskMutator extends TasksMutator {
 	private var beforeSet: Array[Task] = _
 	private var afterSet: Array[Task] = _
 	private var equalSet: Array[(Task, Int)] = _
-	private var equalIterator: Iterator[Array[Boolean]] = _
+	private var equalIterator: Iterator[BigInt] = _
 
 	override def mutate(tasks: Array[Task]): Array[Task] = {
 		if (equalIterator == null) {
@@ -20,15 +20,14 @@ class EqualTimeSwapperTaskMutator extends TasksMutator {
 		}
 		require(equalIterator.hasNext, "cannot mutate - no more mutations")
 		val split = equalIterator.next()
-		val (be, ae) = equalSet.partition(t => split(t._2))
+		val (be, ae) = equalSet.partition(t => split.testBit(t._2))
 		val (b, e) = TasksSorter.sortTasks(beforeSet ++ be.map(_._1), afterSet ++ ae.map(_._1))
 		b ++ e
 	}
 
-	def createSet(len: Int, actual: Array[Boolean] = Array()): Array[Array[Boolean]] = {
-		if (actual.length == len) Array(actual)
-		else
-			createSet(len, actual.appended(true)) ++ createSet(len, actual.appended(false))
+	def createSet(len: Int) = {
+		val limit = BigInt("1".repeat(len))
+		LazyList.from(0).map(BigInt(_)).takeWhile(v => v <= limit).iterator
 	}
 
 	override def canMutate(): Boolean = equalIterator == null || equalIterator.hasNext

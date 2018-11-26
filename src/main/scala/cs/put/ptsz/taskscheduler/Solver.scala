@@ -23,7 +23,8 @@ object Solver {
 		val mutator = new AggregatedTaskMutator(
 			new PartitioningTaskMutator(instance),
 			new CenterOrientedTasksMutator(instance),
-			new SortTaskMutator(instance)
+			new SortTaskMutator(instance),
+			new EqualTimeSwapperTaskMutator
 		)
 		val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
 		val (solution, duration) = measureTime {
