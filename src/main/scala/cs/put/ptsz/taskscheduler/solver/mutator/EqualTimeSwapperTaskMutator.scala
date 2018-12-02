@@ -24,9 +24,13 @@ class EqualTimeSwapperTaskMutator(val partitioner: Partitioner) extends TasksMut
 		b ++ e
 	}
 
-	def createSet(len: Int) = {
+	private def createSet(len: Int) = {
 		val limit = BigInt("1".repeat(len))
-		LazyList.from(0).map(BigInt(_)).takeWhile(v => v <= limit).iterator
+		var base = BigInt(0)
+		LazyList.continually().map(_ =>{
+			base += 1
+			base
+		}).takeWhile(v => v <= limit).iterator
 	}
 
 	override def canMutate(): Boolean = equalIterator == null || equalIterator.hasNext
