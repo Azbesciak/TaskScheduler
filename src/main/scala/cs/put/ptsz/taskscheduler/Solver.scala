@@ -20,11 +20,12 @@ object Solver {
 			new ImprovingSolutionsStopCondition(props.notImprovingSolutionsLimit),
 			new TimeLimitStopCondition(Duration(props.timeLimit))
 		)
+		val partitioner = new Partitioner(instance.problem.tasks)
 		val mutator = new AggregatedTaskMutator(
-			new PartitioningTaskMutator(instance),
+			new PartitioningTaskMutator(instance, partitioner),
 			new CenterOrientedTasksMutator(instance),
 			new SortTaskMutator(instance),
-			new EqualTimeSwapperTaskMutator
+			new EqualTimeSwapperTaskMutator(partitioner)
 		)
 		val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
 		val (solution, duration) = measureTime {

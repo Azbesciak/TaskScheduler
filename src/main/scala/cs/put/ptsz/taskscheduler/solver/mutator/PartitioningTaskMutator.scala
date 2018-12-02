@@ -3,13 +3,13 @@ package cs.put.ptsz.taskscheduler.solver.mutator
 import cs.put.ptsz.taskscheduler.solver.mutator.TasksSorter._
 import cs.put.ptsz.taskscheduler.solver.{Instance, Task}
 
-class PartitioningTaskMutator(val instance: Instance) extends TasksMutator {
+class PartitioningTaskMutator(val instance: Instance, private val partitioner: Partitioner) extends TasksMutator {
 	private[this] var wasUsed = false
 
 	override def mutate(tasks: Array[Task]): Array[Task] = {
-		val (toDoBefore, toDoAfter) = tasks.partition(t => t.earlinessCost < t.tardinessCost)
+		val PartitionedTasksScheduling(toDoBefore, equal, toDoAfter) = partitioner.tasks
 		wasUsed = true
-		val (sortedToDoBefore, sortedToDoAfter) = sortTasks(toDoBefore, toDoAfter)
+		val (sortedToDoBefore, sortedToDoAfter) = sortTasks(toDoBefore, equal ++ toDoAfter)
 		val beforeSum = sortedToDoBefore.map(_.time).sum
 		val afterSum = sortedToDoAfter.map(_.time).sum
 		val timeLeft = instance.dueTime - beforeSum

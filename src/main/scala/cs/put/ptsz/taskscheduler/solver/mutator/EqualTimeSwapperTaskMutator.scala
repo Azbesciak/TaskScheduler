@@ -2,7 +2,7 @@ package cs.put.ptsz.taskscheduler.solver.mutator
 
 import cs.put.ptsz.taskscheduler.solver.Task
 
-class EqualTimeSwapperTaskMutator extends TasksMutator {
+class EqualTimeSwapperTaskMutator(val partitioner: Partitioner) extends TasksMutator {
 	private var beforeSet: Array[Task] = _
 	private var afterSet: Array[Task] = _
 	private var equalSet: Array[(Task, Int)] = _
@@ -10,8 +10,7 @@ class EqualTimeSwapperTaskMutator extends TasksMutator {
 
 	override def mutate(tasks: Array[Task]): Array[Task] = {
 		if (equalIterator == null) {
-			val (before, afterAndEqual) = tasks.partition(t => t.earlinessCost < t.tardinessCost)
-			val (equal, after) = afterAndEqual.partition(t => t.tardinessCost == t.earlinessCost)
+			val PartitionedTasksScheduling(before, equal, after) = partitioner.tasks
 			beforeSet = before
 			equalSet = equal.zipWithIndex
 			afterSet = after
