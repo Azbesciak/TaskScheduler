@@ -25,7 +25,8 @@ object Solver {
 			new PartitioningTaskMutator(instance, partitioner),
 			new CenterOrientedTasksMutator(instance),
 			new SortTaskMutator(instance),
-			new EqualTimeSwapperTaskMutator(partitioner)
+			new DueDateTaskMutator(instance, t => new OffSetFinder(costFunction, t).find()),
+			new EqualTimeSwapperTaskMutator(partitioner),
 		)
 		val scheduler = new SimpleTaskScheduler(instance, stopCondition, costFunction, mutator)
 		val (solution, duration) = measureTime {
