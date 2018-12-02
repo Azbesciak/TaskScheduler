@@ -4,7 +4,14 @@ import cs.put.ptsz.taskscheduler.cost.Cost
 
 import scala.concurrent.duration.Duration
 
-case class Task(id: Int, time: Int, earlinessCost: Int, tardinessCost: Int)
+case class Task(id: Int, time: Int, earlinessCost: Int, tardinessCost: Int) {
+	override def equals(obj: Any): Boolean = obj match {
+		case Task(i, _, _, _) => i == id
+		case _ => false
+	}
+
+	override def hashCode(): Int = id
+}
 
 case class Problem(id: Int, tasks: Array[Task]) {
 	override def toString: String = s"Problem($id, ${tasks.mkString("[", ",", "]")})"
