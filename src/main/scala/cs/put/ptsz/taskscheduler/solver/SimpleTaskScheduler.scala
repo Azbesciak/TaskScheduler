@@ -16,17 +16,17 @@ class SimpleTaskScheduler(
 	override def schedule(): EvaluatedSolution = {
 		var best: EvaluatedSolution = null
 		var currentSolution: EvaluatedSolution = null
-		var currentTasks = tasks
+		var bestTasks = tasks
 		stopCondition.initialize()
 		do {
-			currentTasks = mutator.mutate(currentTasks)
+			val currentTasks = mutator.mutate(bestTasks)
 			val assigner = new OffSetFinder(costFunction, currentTasks)
 			currentSolution = assigner.find()
-			if (best == null || currentSolution.cost < best.cost)
+			if (best == null || currentSolution.cost < best.cost) {
 				best = currentSolution
+				bestTasks = currentTasks
+			}
 		} while (stopCondition.canContinue(currentSolution) && mutator.canMutate())
 		best
 	}
-
-
 }
