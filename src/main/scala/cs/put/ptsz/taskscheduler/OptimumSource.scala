@@ -25,7 +25,7 @@ object OptimumSource {
 		 .toArray
 		val startIndexes = lines.zipWithIndex.filter {
 			case (line, _) => line(0).startsWith("n")
-		}.map(_._2) appended lines.length
+		}.map(_._2) :+ lines.length
 
 		startIndexes.sliding(2)
 		 .map(w => lines.slice(w(0), w(1)))
@@ -37,14 +37,14 @@ object OptimumSource {
 		require(nStr.startsWith("n="), "malformed optima format - unknown n")
 		val instanceSize = nStr.drop(2).toInt
 		val hValues = problemLines(0).drop(1).map(_.drop(2).toDouble)
-		problemLines.drop(1).map(l => {
+		problemLines.drop(1).flatMap(l => {
 			require(l(0).startsWith("k="), "malformed optima format - invalid k")
 			val kVal = l(0).drop(2).toInt
 			val upperBounds = l.drop(1).map(getUpperBound)
 			upperBounds.zip(hValues).map {
 				case (ub, h) => (InstanceParams(instanceSize, kVal, h), ub)
 			}
-		}).flatten
+		})
 	}
 
 	private def getUpperBound(value: String) = {

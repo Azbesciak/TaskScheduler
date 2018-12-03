@@ -14,7 +14,7 @@ class EqualTimeSwapperTaskMutator(val partitioner: Partitioner) extends TasksMut
 			beforeSet = before
 			equalSet = equal.zipWithIndex
 			afterSet = after
-			equalIterator = if (equal.length == 0) Iterator.empty else createSet(equal.length).iterator
+			equalIterator = if (equal.length == 0) Iterator.empty else createSet(equal.length)
 			if (!equalIterator.hasNext) return tasks
 		}
 		require(equalIterator.hasNext, "cannot mutate - no more mutations")
@@ -27,7 +27,7 @@ class EqualTimeSwapperTaskMutator(val partitioner: Partitioner) extends TasksMut
 	private def createSet(len: Int) = {
 		val limit = BigInt("1".repeat(len))
 		var base = BigInt(0)
-		LazyList.continually().map(_ =>{
+		Stream.continually().map(_ =>{
 			base += 1
 			base
 		}).takeWhile(v => v <= limit).iterator
