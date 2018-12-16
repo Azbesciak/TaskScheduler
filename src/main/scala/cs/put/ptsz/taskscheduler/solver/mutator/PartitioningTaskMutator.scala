@@ -16,7 +16,6 @@ class PartitioningTaskMutator(val instance: Instance, private val partitioner: P
 		val PartitionedTasksScheduling(toDoBefore, equal, toDoAfter) = partitioner.tasks
 		val (beq, aeq) = splitStrategies.next().split(equal)
 		val (sortedToDoBefore, sortedToDoAfter) = sortTasks(toDoBefore ++ beq, toDoAfter ++ aeq)
-		sortedToDoBefore ++ sortedToDoAfter
 		val beforeSum = sortedToDoBefore.map(_.time).sum
 		val afterSum = sortedToDoAfter.map(_.time).sum
 		val timeLeft = instance.dueTime - beforeSum
