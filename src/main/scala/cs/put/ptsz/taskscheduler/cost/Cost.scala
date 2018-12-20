@@ -7,4 +7,7 @@ case class Cost(
 	def <(cost: Cost): Boolean = {
 		value < cost.value
 	}
+	def >=(cost: Cost): Boolean = {
+		value >= cost.value
+	}
 }
