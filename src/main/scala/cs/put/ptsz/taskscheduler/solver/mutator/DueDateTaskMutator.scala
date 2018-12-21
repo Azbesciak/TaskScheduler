@@ -82,11 +82,9 @@ case class ExchangeForceSwapper(solutionEvaluator: Array[Task] => EvaluatedSolut
 		val bestBuffer = ArrayBuffer[(Array[Task], Array[Task], EvaluatedSolution)]()
 		swappers.foldLeft(Array((bef, after, solutionEvaluator(bef ++ after)))) {
 			case (arr, swapper) =>
-				limit(arr.flatMap(t => {
-					val res = limit(swapper(t._1, t._2).toArray)
-					bestBuffer.appendAll(res)
-					res
-				}))
+				val res = limit(arr.flatMap(t => limit(swapper(t._1, t._2).toArray)))
+				bestBuffer.append(res.head)
+				res
 		}
 		val (f, t, b) = bestBuffer.minBy(_._3.cost.value)
 		(f, t)
