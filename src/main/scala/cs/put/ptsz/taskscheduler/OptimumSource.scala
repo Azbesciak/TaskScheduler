@@ -4,6 +4,7 @@ import java.io.File
 
 import scala.io.Source
 import scala.util.Properties
+import cs.put.ptsz.taskscheduler.Util.using
 
 
 object OptimumSource {
@@ -11,6 +12,7 @@ object OptimumSource {
 	private lazy val upperBounds: Map[InstanceParams, UpperBoundValue] = getOptimaMap()
 
 	def apply(params: InstanceParams): UpperBoundValue = upperBounds(params)
+
 	def canUse() = Properties.propIsSet(OPTIMUM_SOURCE_PROP)
 
 	private def getOptimaMap() = {
@@ -18,11 +20,12 @@ object OptimumSource {
 		require(optimumPath != null, s"property $OPTIMUM_SOURCE_PROP not set")
 		val file = new File(optimumPath)
 		require(file.exists(), s"optimum file $optimumPath not exists")
-		val lines = Source.fromFile(file)
-		 .getLines()
-		 .filterNot(_.trim.isEmpty)
-		 .map(fixLine)
-		 .toArray
+		val lines = using(Source.fromFile(file))(
+			_.getLines()
+			 .filterNot(_.trim.isEmpty)
+			 .map(fixLine)
+			 .toArray
+		)
 		val startIndexes = lines.zipWithIndex.filter {
 			case (line, _) => line(0).startsWith("n")
 		}.map(_._2) :+ lines.length

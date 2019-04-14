@@ -6,6 +6,7 @@ import cs.put.ptsz.taskscheduler.Util.mapToIndexes
 import cs.put.ptsz.taskscheduler.cost.{CostFunction, OneMachineScheduleEndTimeCostFunction}
 import cs.put.ptsz.taskscheduler.input.ProblemParser
 import cs.put.ptsz.taskscheduler.solver._
+import cs.put.ptsz.taskscheduler.Util.using
 
 import scala.io.Source
 import scala.util.matching.Regex
@@ -94,11 +95,12 @@ object Validator extends App {
 	val instances = Util.createInstances(chosenProblems, hValues)
 	val validator = new StringSolutionValidator(instance => new OneMachineScheduleEndTimeCostFunction(instance))
 
-	private val invalidSolutions = Source.fromFile(solutionFile)
-	 .getLines().toArray
-	 .zip(instances)
-	 .map(s => validator.validate(s._1, s._2))
-	 .filterNot(r => r.isValid)
+	private val invalidSolutions = using(Source.fromFile(solutionFile))(
+		_.getLines().toArray
+		 .zip(instances)
+		 .map(s => validator.validate(s._1, s._2))
+		 .filterNot(r => r.isValid)
+	)
 
 	if (invalidSolutions.nonEmpty) {
 		println("found invalid solutions!")
