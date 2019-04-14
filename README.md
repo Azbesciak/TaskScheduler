@@ -18,3 +18,4 @@ Passed as JVM properties (with `-d` as follows `<param>=<value>)
 | `outputDir` | `string` | StdOutput | path where the result will be returned; if not set - `StdOutput` |
 | `details` | `boolean` | `false` - solver, `true` - benchmark | whether instance details should be printed |
 | `measureTime` | `boolean` | `false` - solver, `true` - benchmark | should measure time |
+| `scheduling` | `boolean` | `true` - solver, `false` - benchmark | should print solution scheduling |

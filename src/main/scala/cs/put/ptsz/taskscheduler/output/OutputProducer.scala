@@ -11,6 +11,7 @@ import scala.util.Properties
 object OutputProducer {
 	val OUTPUT_DIR_PROP = "outputDir"
 	val DETAILS_PROP = "details"
+	val SCHEDULING_PROP = "scheduling"
 	val MEASURE_TIME_PROP = "measureTime"
 
 	def consume(results: Array[Result]) = {
@@ -53,12 +54,12 @@ object OutputProducer {
 		)
 		val maybeDuration = onPropertySwitched(MEASURE_TIME_PROP, () => Array(s"TIME:${getTime(duration)}"))
 		val maybeCompare = compareWithUpperBound(instance, solution)
-		val result = getSolutionString(instance, solution)
-		Array(maybeDetails, maybeCompare, maybeDuration, result).flatten.flatten
+		val maybeResult = getSolutionString(instance, solution)
+		Array(maybeDetails, maybeCompare, maybeDuration, maybeResult).flatten.flatten
 	}
 
 	private def getSolutionString(instance: Instance, solution: EvaluatedSolution) = {
-		Some(Array(s"${solution.cost.value} ${instance.h} ${solution.offset} ${solution.solution.tasks.map(_.task.id).mkString(" ")}"))
+		onPropertySwitched(SCHEDULING_PROP, () => Array(s"${solution.cost.value} ${instance.h} ${solution.offset} ${solution.solution.tasks.map(_.task.id).mkString(" ")}"))
 	}
 
 	private def compareWithUpperBound(instance: Instance, solution: EvaluatedSolution): Option[Array[String]] = {
