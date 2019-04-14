@@ -20,7 +20,7 @@ object OptimumSource {
 		require(file.exists(), s"optimum file $optimumPath not exists")
 		val lines = Source.fromFile(file)
 		 .getLines()
-		 .filterNot(_.isBlank)
+		 .filterNot(_.trim.isEmpty)
 		 .map(fixLine)
 		 .toArray
 		val startIndexes = lines.zipWithIndex.filter {

@@ -25,7 +25,7 @@ class EqualTimeSwapperTaskMutator(val partitioner: Partitioner) extends TasksMut
 	}
 
 	private def createSet(len: Int) = {
-		val limit = BigInt("1".repeat(len))
+		val limit = BigInt("1" * len)
 		var base = BigInt(0)
 		Stream.continually().map(_ =>{
 			base += 1
