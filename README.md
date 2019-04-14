@@ -15,3 +15,6 @@ Passed as JVM properties (with `-d` as follows `<param>=<value>)
 | `stopCondition.maxSolutions` | `int` |100 | max solutions made by solver |
 | `stopCondition.notImprovingSolutions` | `int` | 10 | limit when solver won't continue solving |
 | `stopCondition.timeLimit` | `string` | 1s | target solving time; checked only between iterations |
+| `outputDir` | `string` | StdOutput | path where the result will be returned; if not set - `StdOutput` |
+| `details` | `boolean` | `false` - solver, `true` - benchmark | whether instance details should be printed |
+| `measureTime` | `boolean` | `false` - solver, `true` - benchmark | should measure time |
