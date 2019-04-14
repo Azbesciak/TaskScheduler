@@ -47,12 +47,17 @@ object Benchmark extends App {
 	val retries = Properties.propOrElse("benchmark", "25").toInt
 	OutputProducer.enable(OutputProducer.MEASURE_TIME_PROP)
 	OutputProducer.enable(OutputProducer.DETAILS_PROP)
-	val results = InstanceFactory.provide(args)
-	 .map(instance => {
-		 (0 until retries).map { _ =>
-			 solve(instance, props)
-		 }.sortBy(_.duration).toArray.apply(retries / 2)
-	 })
+	val results = getResults(retries, props)
+
+	private def getResults(retries: Int, props: SolverProperties) = {
+		InstanceFactory.provide(args)
+		 .map(instance => {
+			 (0 until retries).map { _ =>
+				 solve(instance, props)
+			 }.sortBy(_.duration).toArray.apply(retries / 2)
+		 })
+	}
+
 	OutputProducer.consume(results)
 }
 

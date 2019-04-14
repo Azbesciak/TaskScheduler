@@ -1,0 +1,12 @@
+[
+  {
+    "name": "java.util.Scanner",
+    "allDeclaredConstructors" : true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "scala.io.Source",
+    "allDeclaredConstructors" : true,
+    "allDeclaredMethods": true
+  }
+]
