@@ -37,6 +37,7 @@ object Solver {
 
 object Runner extends App {
 	private val props = SolverProperties.get()
+	OutputProducer.enableIfNotSet(OutputProducer.SCHEDULING_PROP)
 	val results = InstanceFactory.provide(args)
 	 .map(instance => solve(instance, props))
 	OutputProducer.consume(results)
@@ -45,8 +46,8 @@ object Runner extends App {
 object Benchmark extends App {
 	private val props = SolverProperties.get()
 	val retries = Properties.propOrElse("benchmark", "25").toInt
-	OutputProducer.enable(OutputProducer.MEASURE_TIME_PROP)
-	OutputProducer.enable(OutputProducer.DETAILS_PROP)
+	OutputProducer.enableIfNotSet(OutputProducer.MEASURE_TIME_PROP)
+	OutputProducer.enableIfNotSet(OutputProducer.DETAILS_PROP)
 	val results = getResults(retries, props)
 
 	private def getResults(retries: Int, props: SolverProperties) = {

@@ -21,7 +21,10 @@ object OutputProducer {
 		output(results).write(serialized)
 	}
 
-	def enable(property: String) = Properties.setProp(property, "true")
+	def enableIfNotSet(property: String) = {
+		if (!Properties.propIsSet(property))
+			Properties.setProp(property, "true")
+	}
 
 	private def output(results: Array[Result]) = {
 		val instances = results.map(_.instance)
