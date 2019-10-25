@@ -9,6 +9,7 @@ it is commandline application - you run in 2 ways this by passing arguments:
 
 ### Allowed properties
 Passed as JVM properties (with `-d` as follows `<param>=<value>)
+
 | name | type | default | note |
 | ---- | ---- | ------- | ---- |
 | `benchmark` | `int` | 25 | used in benchmark mode, sets iteration count |
